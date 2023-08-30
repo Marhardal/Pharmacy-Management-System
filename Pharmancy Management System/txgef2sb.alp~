@@ -1,0 +1,992 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Dapper;
+using System.Data.SqlClient;
+using ZXing;
+using AForge.Video.DirectShow;
+using AForge.Video;
+using CrystalDecisions.CrystalReports.Engine;
+using System.Windows.Forms.DataVisualization.Charting;
+
+namespace Point_of_Sale
+{
+    public partial class Staff : Form
+    {
+        public Staff()
+        {
+            InitializeComponent();
+        }
+
+        private void gunaControlBox1_Click(object sender, EventArgs e)
+        {
+            if (db.State == ConnectionState.Closed)
+            {
+                db.Open();
+                string ins = "insert into Activity values(@fn, @sn, @rl, @dtl, @dt, @tm);";
+                string dtl = "Logged out of the system.";
+                string dt = DateTime.Now.ToShortDateString();
+                string tm = DateTime.Now.ToShortTimeString();
+                var exe = db.Execute(ins, new { fn = Fname, sn = Sname, rl = Role, dtl, dt, tm });
+                if (exe > 0)
+                {
+                    DialogResult dr = MessageBox.Show("Are you sure you want to exit.", "Note", MessageBoxButtons.YesNo);
+                    if (DialogResult.Yes==dr)
+                    {
+                        Application.Exit();
+                    }
+                }
+                db.Close();
+            }
+        }
+
+        SqlConnection db = new SqlConnection(@"Data Source=DESKTOP-3TSVGJC;Initial Catalog='Point Of Sale';Integrated Security=True");
+        SqlCommand com = new SqlCommand();
+        SqlDataAdapter sda = new SqlDataAdapter();
+        DataTable dt = new DataTable();
+        FilterInfoCollection filter;
+        VideoCaptureDevice capture;
+
+        public class Saleview
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public string Cash { get; set; }
+            public  string Quantity { get; set; }
+            public DateTime Date { get; set; }
+            public string Time { get; set; }
+            public string First_Name { get; set; }
+            public string Surname { get; set; }
+            public string Total { get; set; }
+        }
+        public class Expenses
+        {
+            public int ID { get; set; }
+            public string Name { get; set; }
+            public string Amount { get; set; }
+            public DateTime Date { get; set; }
+            public string First_Name { get; set; }
+            public string Surname { get; set; }
+        }
+        void view()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string que = "Select * from Sales where [First Name] = @fn and Surname = @sn order by [Sales ID] desc";
+                    com = new SqlCommand(que, db);
+                    com.Parameters.Add("@fn", SqlDbType.VarChar).Value = Fname;
+                    com.Parameters.Add("@sn", SqlDbType.VarChar).Value = Sname;
+                    sda = new SqlDataAdapter(com);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0) 
+                    {
+                        viewdgv.DataSource = dt;
+                    }
+                    dt.Dispose();
+                    sda.Dispose();
+                    //var list = db.Query<Saleview>(que, new { Fname, Sname }).ToList();
+                    //if (list.Count > 0)
+                    //{
+                    //    viewdgv.DataSource = list;
+                    //}
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Failed to Load Sales" + er);
+            }
+        }
+
+        void expeview()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string que = "Select * from Expense Where [First Name] = @fn and Surname = @sn order by ID desc;";
+                    com = new SqlCommand(que, db);
+                    com.Parameters.Add("@fn", SqlDbType.VarChar).Value = Fname;
+                    com.Parameters.Add("@sn", SqlDbType.VarChar).Value = Sname;
+                    sda = new SqlDataAdapter(com);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        expensedgv.DataSource = dt;
+                    }
+                    dt.Dispose();
+                    sda.Dispose();
+                    //var lis = db.Query<Expenses>(que, new { Fname, Sname }).ToList();
+                    //if (lis.Count > 0)
+                    //{
+                    //    expensedgv.DataSource = lis;
+                    //}
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Failed to load Expense " + er);
+            }
+        }
+
+        public static string usnm;
+        internal static string Fname;
+        internal static string Sname;
+        internal static string Role;
+
+        internal void select()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "Select [First Name], Surname, Role from Users where Username = @usnm;";
+                    com = new SqlCommand(sele, db);
+                    com.Parameters.Add("@usnm", SqlDbType.VarChar).Value = usnm;
+                    SqlDataReader sdr = com.ExecuteReader();
+                    if (sdr.HasRows)
+                    {
+                        sdr.Read();
+                        Fname = sdr[0].ToString();
+                        Sname = sdr[1].ToString();
+                        Role = sdr[2].ToString();
+                    }
+                    sdr.Close();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Failed to load First Name and Surname " + er);
+            }
+        }
+        private void Staff_Load(object sender, EventArgs e)
+        {
+            usnm = Login.usnm;
+            select();
+            headtxt.Text = File.ReadLines("info.txt").First();
+            bunifuLabel3.Text = File.ReadLines("info.txt").ElementAtOrDefault(1);
+            bunifuLabel4.Text = File.ReadLines("info.txt").ElementAtOrDefault(2);
+            bunifuLabel5.Text = File.ReadLines("info.txt").ElementAtOrDefault(3);
+            panel1.Size = new Size(213, 46);
+            abouttxt.Text = "@ " + DateTime.Now.Year + " Dot Click IT Solutions ";
+            expensebtn.Location = new Point(13, 62);
+            Homebtn.Location = new Point(13, 122);
+            ActiveControl = dashlbl;
+            filter = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+            foreach (FilterInfo filt in filter)
+            {
+                cam.Items.Add(filt.Name);
+                cam.selectedIndex = 0;
+            }
+            capture = new VideoCaptureDevice(filter[cam.selectedIndex].MonikerString);
+            capture.NewFrame += Capture_NewFrame;
+            capture.Start();
+            today();
+            monthly();
+            yearly();
+            ActiveControl = dashlbl;
+            //month();
+        }
+
+        internal void month()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select Type, SUM(Amount) as 'Amount' from Graph where MONTH(Date) = MONTH(CURRENT_TIMESTAMP) and [First Name]='"+Fname+"' and Surname='"+Sname+"' group by Type ;";
+
+                    com = new SqlCommand(sele, db);
+                    sda = new SqlDataAdapter(com);
+                    DataSet ds = new DataSet();
+                    sda.Fill(ds);
+                    chart1.DataSource = ds.Tables[0];
+                    chart1.Series[0].XValueMember = "Type";
+                    chart1.Series[0].YValueMembers = "Amount";
+                    chart1.Series[0].ChartType = SeriesChartType.Doughnut;
+                    chart1.Titles.Add("Businness performance for this Month");
+                    chart1.Series[0].IsValueShownAsLabel = true;
+                    ds.Dispose();
+                    sda.Dispose();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as Monthly graph was inprocess of loading" + er);
+            }
+        }
+
+        internal void yearly()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select SUM([Total Price]) as [Monthly Cash], Count([Sales ID]) as [Total Sales] from Sales "
+                    + " where Year(Date) = Year(CURRENT_TIMESTAMP) and [First Name] = @fn and Surname = @sn; ";
+                    com = new SqlCommand(sele, db);
+                    com.Parameters.Add("@fn", SqlDbType.VarChar).Value = Fname;
+                    com.Parameters.Add("@sn", SqlDbType.VarChar).Value = Sname;
+                    SqlDataReader sdr = com.ExecuteReader();
+                    if (sdr.HasRows)
+                    {
+                        sdr.Read();
+                        yttxt.Text = "Total Sales Made this Years " + sdr[0].ToString();
+                        ytctxt.Text = "Number of Sales Made this Year " + sdr[1].ToString();
+                    }
+                    sdr.Close();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Failed to count this Years income." + er);
+            }
+        }
+
+        internal void monthly()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select SUM([Total Price]) as [Monthly Cash], Count([Sales ID]) as [Total Sales] from Sales "
+                    + " where MONTH(Date) = MONTH(CURRENT_TIMESTAMP) and [First Name] = @fn and Surname = @sn; ";
+                    com = new SqlCommand(sele, db);
+                    com.Parameters.Add("@fn", SqlDbType.VarChar).Value = Fname;
+                    com.Parameters.Add("@sn", SqlDbType.VarChar).Value = Sname;
+                    SqlDataReader sdr = com.ExecuteReader();
+                    if (sdr.HasRows)
+                    {
+                        sdr.Read();
+                        mttxt.Text = "Total Sales Made this Month " + sdr[0].ToString();
+                        mtctxt.Text = "Number of sales Made this month " + sdr[1].ToString();
+                    }
+                    sdr.Close();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Failed to count income made this month." + er);
+            }
+        }
+
+        internal void today()
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select SUM([Total Price]) as [Today's Cash], Count([Sales ID]) as [Total Sales] from Sales "
+                    +" where DAY(Date) = DAY(CURRENT_TIMESTAMP) and [First Name] = @fn and Surname = @sn; ";
+                    com = new SqlCommand(sele, db);
+                    com.Parameters.Add("@fn", SqlDbType.VarChar).Value = Fname;
+                    com.Parameters.Add("@sn", SqlDbType.VarChar).Value = Sname;
+                    SqlDataReader sdr = com.ExecuteReader();
+                    if (sdr.HasRows)
+                    {
+                        sdr.Read();
+                        ttlbl.Text = "Total Sales Made Today " + sdr[0].ToString();
+                        ttclbl.Text = "Number of Sales Made Today " + sdr[1].ToString();
+                    }
+                    sdr.Close();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Failed to calculate todays income." + er);
+            }
+        }
+        private void Capture_NewFrame(object sender, NewFrameEventArgs eventArgs)
+        {
+            Bitmap map = (Bitmap)eventArgs.Frame.Clone();
+            BarcodeReader reader = new BarcodeReader();
+            var result = reader.Decode(map);
+            if (result != null)
+            {
+                bctxt.Invoke(new MethodInvoker(delegate ()
+                {
+                    bctxt.Text = result.ToString();
+                }));
+            }
+            scan.Image = map;
+        }
+
+        private void Salesbtn_Click(object sender, EventArgs e)
+        {
+            panel1.Size = new Size(213, 154);
+            mansep.Show();
+            expensebtn.Location = new Point(13, 160);
+            Homebtn.Location = new Point(13, 220);
+        }
+
+        private void gunaTransfarantPictureBox6_Click(object sender, EventArgs e)
+        {
+            //panel1.Size = new Size(213, 46);
+            //mansep.Hide();
+            //gunaTransfarantPictureBox5.Image = Image.FromFile(@"C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\Icons\icons8_more_than.ico");
+            //gunaTransfarantPictureBox5.Size = new Size(24, 24);
+            //expensebtn.Location = new Point(13, 62);
+            //Homebtn.Location = new Point(13, 122);
+        }
+
+        private void expensebtn_Click(object sender, EventArgs e)
+        {
+            Page.SetPage("Expense");
+            expeview();
+        }
+
+        private void Catbtn_Click(object sender, EventArgs e)
+        {
+            Page.SetPage("View");
+            view();
+            dashlbl.Text = "View all Sales Done By You.";
+        }
+
+        private void gunaAdvenceButton2_Click(object sender, EventArgs e)
+        {
+            Page.SetPage("Create");
+            dashlbl.Text = "Create a Sale";
+        }
+
+        private void Usersbtn_Click(object sender, EventArgs e)
+        {
+            Page.SetPage("Update");
+            dashlbl.Text = "Update A sale";
+        }
+
+        private void expseatxt_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select * from Sales where Name like '" + saleseatxt.Text + "%' or Cash like '" + saleseatxt.Text + "%' or Quantity like '" + saleseatxt.Text + "%' or Date like '" + saleseatxt.Text + "%' or Time like '" + saleseatxt.Text + "%'"
+                    + " or Total like '" + saleseatxt.Text + "%' or[Sales ID] like '" + saleseatxt.Text + "%'; ";
+                    com = new SqlCommand(sele, db);
+                    sda = new SqlDataAdapter(com);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        viewdgv.DataSource = dt;
+                    }
+                    dt.Dispose();
+                    sda.Dispose();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as you were searching for a sale " + er);
+            }
+        }
+        private void pntxt_Enter(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select Name from Products;";
+                    com = new SqlCommand(sele, db);
+                    sda = new SqlDataAdapter(com);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        AutoCompleteStringCollection comp = new AutoCompleteStringCollection();
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            comp.Add(dt.Rows[i][0].ToString());
+                        }
+                        pntxt.AutoCompleteMode = AutoCompleteMode.Append;
+                        pntxt.AutoCompleteCustomSource = comp;
+                        pntxt.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                        sda.Dispose();
+                        dt.Dispose();
+                        db.Close();
+                    }
+                    else
+                    {
+                        sda.Dispose();
+                        dt.Dispose();
+                        db.Close();
+                        string sel = "select [Bar Code] from Products;";
+                        com = new SqlCommand(sel, db);
+                        sda = new SqlDataAdapter(com);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        AutoCompleteStringCollection comp = new AutoCompleteStringCollection();
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            comp.Add(dt.Rows[i][0].ToString());
+                        }
+                        pntxt.AutoCompleteMode = AutoCompleteMode.Append;
+                        pntxt.AutoCompleteCustomSource = comp;
+                        pntxt.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                        sda.Dispose();
+                        dt.Dispose();
+                        db.Close();
+                    }
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as You were searching." + er);
+            }
+        }
+
+        private void bctxt_Enter(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select [Bar Code] from Products;";
+                    com = new SqlCommand(sele, db);
+                    sda = new SqlDataAdapter(com);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    AutoCompleteStringCollection comp = new AutoCompleteStringCollection();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        comp.Add(dt.Rows[i][0].ToString());
+                    }
+                    bctxt.AutoCompleteMode = AutoCompleteMode.Append;
+                    bctxt.AutoCompleteCustomSource = comp;
+                    bctxt.AutoCompleteSource = AutoCompleteSource.CustomSource;
+                    sda.Dispose();
+                    dt.Dispose();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as You were searching." + er);
+            }
+        }
+
+        private void Staff_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (capture != null)
+            {
+                if (capture.IsRunning)
+                {
+                    capture.Stop();
+                }
+            }
+        }
+
+        private void pntxt_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select * from Products where [Bar Code]='" + bctxt.Text + "';";
+                    com = new SqlCommand(sele, db);
+                    SqlDataReader sdr = com.ExecuteReader();
+                    if (sdr.HasRows)
+                    {
+                        sdr.Read();
+                        pntxt.Text = sdr[1].ToString();
+                        viewprod.Rows.Add(sdr[1].ToString(), sdr[3].ToString(), "0", "0", sdr[4].ToString());
+                    }
+                    sdr.Close();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as products was auto filling." + er);
+            }
+        }
+
+        string qt;
+        string na;
+
+        void Crystal()
+        {
+            DataSet ds = new DataSet();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("Product Name");
+            dt.Columns.Add("Total Price");
+            dt.Columns.Add("Quantity");
+            dt.Columns.Add("Total VAT");
+            foreach (DataGridViewRow dr in viewprod.Rows)
+            {
+                dt.Rows.Add(dr.Cells[0].Value, Convert.ToSingle(dr.Cells[3].Value), dr.Cells[2].Value ,Convert.ToSingle(dr.Cells[4].Value));
+            }
+            ds.Tables.Add(dt);
+            ds.WriteXmlSchema("applicant.xml");
+            Receiptread rr = new Receiptread();
+            var re = new Receipt();
+            re.SetDataSource(ds);
+            bunifuLabel3.Text = File.ReadLines("info.txt").ElementAtOrDefault(1);
+            bunifuLabel4.Text = File.ReadLines("info.txt").ElementAtOrDefault(2);
+            bunifuLabel5.Text = File.ReadLines("info.txt").ElementAtOrDefault(3);
+            float wt = Convert.ToSingle(Totallbl.Text) - Convert.ToSingle(ttlvatlbl.Text);
+            TextObject wtxt = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["wtxt"];
+            wtxt.Text = wt.ToString();
+            TextObject ntxt = (TextObject)re.ReportDefinition.Sections[1].ReportObjects["ntxt"];
+            ntxt.Text = File.ReadLines("info.txt").First();
+            TextObject pobtxt = (TextObject)re.ReportDefinition.Sections[1].ReportObjects["pobtxt"];
+            pobtxt.Text = File.ReadLines("info.txt").ElementAtOrDefault(1);
+            TextObject ctytxt = (TextObject)re.ReportDefinition.Sections[1].ReportObjects["ctytxt"];
+            ctytxt.Text = File.ReadLines("info.txt").ElementAtOrDefault(2);
+            TextObject rntxt = (TextObject)re.ReportDefinition.Sections[1].ReportObjects["rntxt"];
+            rntxt.Text = show;
+            TextObject znotxt = (TextObject)re.ReportDefinition.Sections[1].ReportObjects["znotxt"];
+            znotxt.Text = zno;
+            TextObject txt = (TextObject)re.ReportDefinition.Sections[1].ReportObjects["txt"];
+            txt.Text = ttlvatlbl.Text;
+            TextObject ttltax = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["ttltax"];
+            ttltax.Text = ttlvatlbl.Text;
+            TextObject ttl = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["ttl"];
+            ttl.Text = Totallbl.Text;
+            TextObject ctxt = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["ctxt"];
+            ctxt.Text = ccatxt.Text;
+            TextObject chtxt = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["chtxt"];
+            chtxt.Text = cctxt.Text;
+            TextObject fntxt = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["fntxt"];
+            fntxt.Text = Fname;
+            TextObject sntxt = (TextObject)re.ReportDefinition.Sections[4].ReportObjects["sntxt"];
+            sntxt.Text = Sname;
+            rr.crystalReportViewer1.ReportSource = re;
+            rr.crystalReportViewer1.Refresh();
+            dt.Dispose();
+            ds.Dispose();
+            rr.Show();
+        }
+        float cou;
+        void rece()
+        {
+            db.Open();
+            string que = "Select * from Rece";
+            SqlCommand com = new SqlCommand(que, db);
+            SqlDataReader sdr = com.ExecuteReader();
+            if (sdr.HasRows)
+            {
+                sdr.Read();
+                if (sdr[1].ToString().Length == 9 || sdr[2].ToString().Length == 5)
+                {
+                    sdr.Close();
+                    string upd = "Update Rece set [right]=1 where ID = 1";
+                    com = new SqlCommand(upd, db);
+                    com.ExecuteNonQuery();
+                    db.Close();
+                }
+                else if (sdr[2].ToString().Length == 5)
+                {
+                    sdr.Close();
+                    string upd = "Update Rece set [ZNO]=(DAY(CURRENT_TIMESTAMP)+1) where ID = 1";
+                    com = new SqlCommand(upd, db);
+                    com.ExecuteNonQuery();
+                    db.Close();
+                }
+
+                else
+                {
+                    int one = Convert.ToInt32(sdr[0].ToString()) + 1;
+                    int two = Convert.ToInt32(sdr[1].ToString()) + 1;
+                    int three = Convert.ToInt32(sdr[2].ToString()) + 1;
+                    sdr.Close();
+                    string up = "update Rece set [Left] = DAY(CURRENT_TIMESTAMP), [Right] =" + two + ", [ZNO]=" + three + " where ID = 1 ;";
+                    com = new SqlCommand(up, db);
+                    com.ExecuteNonQuery();
+                    db.Close();
+                }
+            }
+        }
+        string zno;
+        string show;
+        void num()
+        {
+            db.Open();
+            string sele = "Select * from Rece";
+            com = new SqlCommand(sele, db);
+            SqlDataReader sdr = com.ExecuteReader();
+            if (sdr.HasRows)
+            {
+                sdr.Read();
+                int left = Convert.ToInt32(sdr[0].ToString());
+                int right = Convert.ToInt32(sdr[1].ToString());
+                show = "00" + left + "/00" + right;
+                zno = "00" + sdr[2].ToString();
+                sdr.Close();
+            }
+            db.Close();
+        }
+        private void Add_Click(object sender, EventArgs e)
+        {
+            if (ccatxt.Text != "" || cctxt.Text != "")
+            {
+                try
+                {
+                    if (db.State == ConnectionState.Closed)
+                    {
+                        rece();
+                        num();
+                        for (int i = 0; i < viewprod.Rows.Count; i++)
+                        {
+                            string ins = "Insert into Sales Values(@na, @qt, @dt, @tm, @fn, @sn, @tt, @vat, @tp);";
+                            db.Open();
+                            na = viewprod.Rows[i].Cells[0].Value.ToString();
+                            string pr = viewprod.Rows[i].Cells[1].Value.ToString();
+                            cou = viewprod.RowCount;
+                            qt = viewprod.Rows[i].Cells[2].Value.ToString();
+                            string dt = DateTime.Now.ToString("yyyy-MM-dd");
+                            string tm = DateTime.Now.ToString("HH:mm:ss");
+                            string tt = viewprod.Rows[i].Cells[3].Value.ToString();
+                            string vat = viewprod.Rows[i].Cells[4].Value.ToString();
+                            string fn = Fname;
+                            string sn = Sname;
+                            string tp = "0";
+                            var que = db.Execute(ins, new { na, qt, dt, tm, fn, sn, tt, vat, tp });
+                            db.Close();
+                            upproduct();
+                        }
+                        upsale();
+                        insgra();
+                        insact();
+                        Crystal();
+                        viewprod.Rows.Clear();
+                        Totallbl.Text = "";
+                    }
+                }
+                catch (Exception er)
+                {
+                    MessageBox.Show("An error occured as Products was about to be sold " + er);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please fill in fields.");
+            }
+        }
+
+        void upsale()
+        {
+            db.Open();
+            string sele = "select MAX([Sales ID]) from Sales;";
+            com = new SqlCommand(sele, db);
+            SqlDataReader sdr = com.ExecuteReader();
+            if (sdr.HasRows)
+            {
+                sdr.Read();
+                string id = sdr[0].ToString();
+                sdr.Close();
+                string up = "update Sales set VAT=@ch, [Total Price]=@tp where [Sales ID]=@id;";
+                string ch = ttlvatlbl.Text;
+                string tp = Totallbl.Text;
+                var exe = db.Execute(up, new { ch, tp, id });
+            }
+            db.Close();
+        }
+
+        void insact()
+        {
+            db.Open();
+            string ins = "insert into Activity values(@fn, @sn, @rl, @dtl, @dt, @tm);";
+            string dtl = "Made a Sale.";
+            string dt = DateTime.Now.ToShortDateString();
+            string tm = DateTime.Now.ToShortTimeString();
+            var exe = db.Execute(ins, new { fn = Fname, sn = Sname, rl = Role, dtl, dt, tm });
+            db.Close();
+        }
+
+        void insgra()
+        {
+            db.Open();
+            string que = "insert into Graph values('Income', '" + Totallbl.Text + "', @dt)";
+            com = new SqlCommand(que, db);
+            com.Parameters.Add("@dt", SqlDbType.Date).Value = DateTime.Now.ToString("dd MM yyyy");
+            com.ExecuteNonQuery();
+            db.Close();
+        }
+
+        void upproduct()
+        {
+            //MessageBox.Show(qt);
+            db.Open();
+            float diff;
+            string sele = "select Quantity from Products where Name='" + na + "';";
+            com = new SqlCommand(sele, db);
+            SqlDataReader sdr = com.ExecuteReader();
+            if (sdr.HasRows)
+            {
+                sdr.Read();
+                float qua = Convert.ToSingle(sdr[0].ToString());
+                //MessageBox.Show(qua.ToString());
+                diff = qua - Convert.ToSingle(qt);
+                sdr.Close();
+                string que = "update Products set Quantity='" + diff + "' where Name='" + na + "';";
+                com = new SqlCommand(que, db);
+                com.ExecuteNonQuery();
+            }
+            db.Close();
+        }
+
+        private void gunaAdvenceButton5_Click(object sender, EventArgs e)
+        {
+            if (viewprod.SelectedRows.Count > 0) 
+            {
+                viewprod.Rows.RemoveAt(viewprod.SelectedRows[0].Index);
+            }
+            else
+            {
+                MessageBox.Show("Please select a row to continue.");
+            }
+            float sum = 0;
+            //Totallbl.Text = viewprod.Rows.Cast<DataGridViewRow>().AsEnumerable().Sum(x => int.Parse(x.Cells[3].Value.ToString())).ToString();
+            for (int i = 0; i < viewprod.Rows.Count; i++)
+            {
+                sum += Convert.ToSingle(viewprod.Rows[i].Cells[3].Value.ToString());
+            }
+            Totallbl.Text = sum.ToString();
+        }
+
+        private void ccatxt_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                float ttl = Convert.ToSingle(Totallbl.Text);
+                float cca = Convert.ToSingle(ccatxt.Text);
+                float change = cca - ttl;
+                if (cca < ttl)
+                {
+                    MessageBox.Show("Customer Paid Less than the required Price.");
+                }
+                else
+                {
+                    cctxt.Text = change.ToString();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("Please enter a number.");
+            }
+        }
+
+        private void bunifuDropdown1_onItemSelected(object sender, EventArgs e)
+        {
+            if (bunifuDropdown1.selectedValue == "Logout")
+            {
+                DialogResult dr = MessageBox.Show("Do you want to logout.", "Note", MessageBoxButtons.YesNo);
+                if (dr == DialogResult.Yes)
+                {
+                    if (db.State == ConnectionState.Closed)
+                    {
+                        db.Open();
+                        string ins = "insert into Activity values(@fn, @sn, @rl, @dtl, @dt, @tm);";
+                        string dtl = "Logged out of the system.";
+                        string dt = DateTime.Now.ToShortDateString();
+                        string tm = DateTime.Now.ToShortTimeString();
+                        var exe = db.Execute(ins, new { fn = Fname, sn = Sname, rl = Role, dtl, dt, tm });
+                        if (exe > 0)
+                        {
+                            Hide();
+                            Fname = "";
+                            Sname = "";
+                            Role = "";
+                            usnm = "";
+                            Login log = new Login();
+                            log.Show();
+                        }
+                        db.Close();
+                    }
+                }
+            }
+            else if (bunifuDropdown1.selectedValue == "Profile") 
+            {
+                try
+                {
+                    if (db.State == ConnectionState.Closed) 
+                    {
+                        db.Open();
+                        string sele = "Select * from Users Where Username = @usn";
+                        com = new SqlCommand(sele, db);
+                        com.Parameters.Add("@usn", SqlDbType.VarChar).Value = usnm;
+                        SqlDataReader sdr = com.ExecuteReader();
+                        if (sdr.HasRows)
+                        {
+                            sdr.Read();
+                            Registration reg = new Registration();
+                            reg.fntxt.Text = sdr[1].ToString();
+                            reg.sntxt.Text = sdr[2].ToString();
+                            reg.usntxt.Text = sdr[3].ToString();
+                            reg.emltxt.Text = sdr[4].ToString();
+                            reg.cattxt.SelectedItem(sdr[5].ToString());
+                            reg.cattxt.Enabled = false;
+                            reg.bunifuDropdown1.SelectedItem(sdr[6].ToString());
+                            reg.pwtxt.Text = sdr[7].ToString();
+                            reg.label1.Text = sdr[0].ToString();
+                            reg.bunifuDropdown1.Enabled = false;
+                            reg.upusrbtn.Show();
+                            reg.Show();
+                            Hide();
+                        }
+                    }
+                }
+                catch (Exception er)
+                {
+                    MessageBox.Show("An error happen as you want to open your profile details." + er);
+                }
+            }
+        }
+
+        private void gunaAdvenceButton1_Click(object sender, EventArgs e)
+        {
+            Page.SetPage("Home");
+            today();
+            monthly();
+            yearly();
+        }
+
+        private void gunaAdvenceButton4_Click(object sender, EventArgs e)
+        {
+            Expense expe = new Expense();
+            expe.addpro.Show();
+            expe.Show();
+        }
+
+        private void gunaAdvenceButton3_Click(object sender, EventArgs e)
+        {
+            Expense expe = new Expense();
+            expe.natxt.Text = expensedgv.CurrentRow.Cells[1].Value.ToString();
+            expe.cattxt.Text = expensedgv.CurrentRow.Cells[2].Value.ToString();
+            expe.bunifuLabel4.Text = expensedgv.CurrentRow.Cells[0].Value.ToString();
+            expe.uppro.Show();
+            expe.Show();
+        }
+
+        private void expedgv_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "Select * from Expense where ID like '" +expedgv.Text + "%' or Name like '" + expedgv.Text + "%' or Amount like '" + expedgv.Text + "%'";
+                    com = new SqlCommand(sele, db);
+                    sda = new SqlDataAdapter(com);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    if (dt.Rows.Count > 0)
+                    {
+                        expensedgv.DataSource = dt;
+                    }
+                    dt.Dispose();
+                    sda.Dispose();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as you were searching for an expense " + er);
+            }
+        }
+
+        private void pntxt_OnValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void viewprod_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void bctxt_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                if (db.State == ConnectionState.Closed)
+                {
+                    db.Open();
+                    string sele = "select * from Products where [Bar Code]='" + bctxt.Text + "';";
+                    com = new SqlCommand(sele, db);
+                    SqlDataReader sdr = com.ExecuteReader();
+                    if (sdr.HasRows)
+                    {
+                        sdr.Read();
+                        pntxt.Text = sdr[1].ToString();
+                        viewprod.Rows.Add(sdr[1].ToString(), sdr[3].ToString(), "0", "0", sdr[4].ToString());
+                    }
+                    sdr.Close();
+                    db.Close();
+                }
+            }
+            catch (Exception er)
+            {
+                MessageBox.Show("An error occured as products was auto filling." + er);
+            }
+        }
+
+        private void addsalbtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void prtxt_Leave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void viewprod_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                float pr = Convert.ToSingle(viewprod.CurrentRow.Cells[1].Value.ToString());
+                float qt = Convert.ToSingle(viewprod.CurrentRow.Cells[2].Value.ToString());
+                float vt = Convert.ToSingle(viewprod.CurrentRow.Cells[4].Value.ToString());
+                float ans = pr * qt;
+                float vat = vt * qt;
+                string add = ans.ToString();
+                viewprod.CurrentRow.Cells[4].Value = vat.ToString();
+                float sum = 0;
+                float va = 0;
+                for (int i = 0; i < viewprod.Rows.Count; i++)
+                {
+                    viewprod.Rows[i].Cells[3].Value = add;
+                    sum += Convert.ToSingle(viewprod.Rows[i].Cells[3].Value.ToString());
+                    va += Convert.ToSingle(viewprod.Rows[i].Cells[4].Value.ToString());
+                }
+                Totallbl.Text = sum.ToString();
+                ttlvatlbl.Text = va.ToString();
+
+            }
+            finally
+            {
+
+            }
+        }
+    }
+}

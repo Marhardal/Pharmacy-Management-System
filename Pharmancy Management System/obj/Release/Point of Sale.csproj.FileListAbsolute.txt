@@ -1,0 +1,77 @@
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Point of Sale.exe.config
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\x86\sqlite3.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\x64\sqlite3.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Icons\icons8_home_16.png
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Icons\icons8_product_32.png
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Icons\icons8_settings_32.png
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Icons\icons8_shoppin_cart_32.png
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Icons\icons8_warning.ico
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Point of Sale.exe
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Point of Sale.pdb
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\AForge.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\AForge.Video.DirectShow.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\AForge.Video.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu.UI.WinForms.BunifuLabel.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu.UI.WinForms.BunifuPages.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu.UI.WinForms.BunifuPictureBox.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu_UI_v1.5.3.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.CrystalReports.Engine.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportSource.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.Shared.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.Windows.Forms.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Dapper.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\FastColoredTextBox.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\FlashControlV71.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Guna.UI.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\MetroFramework.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\System.Data.SQLite.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\zxing.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\zxing.presentation.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.DataDefModel.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.ClientDoc.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.Controllers.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.CommLayer.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.Prompting.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\ShockwaveFlashObjects.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\CrystalDecisions.ReportAppServer.CommonControls.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\stdole.dll
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\AForge.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\AForge.Video.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\AForge.Video.DirectShow.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu.UI.WinForms.BunifuLabel.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu.UI.WinForms.BunifuPages.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu.UI.WinForms.BunifuPictureBox.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Bunifu_UI_v1.5.3.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\Dapper.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\System.Data.SQLite.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\zxing.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\bin\Release\zxing.presentation.xml
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point of Sale.csprojResolveAssemblyReference.cache
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.AddProd.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Bars.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Category.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Expense.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Home.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Login.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Manage.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Monthview.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Progview.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Progyear.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Properties.Resources.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Proview.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Quatation.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Quatview.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Receiptread.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Registration.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Sale.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Settings.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point_of_Sale.Staff.resources
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point of Sale.csproj.GenerateResource.Cache
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point of Sale.exe
+C:\Users\Martin Harawa\Documents\Visual Studio 2015\Projects\Desktop Dev WinForm on .NET\Point of Sale\Point of Sale\obj\Release\Point of Sale.pdb
